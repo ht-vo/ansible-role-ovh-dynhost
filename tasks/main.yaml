@@ -1,0 +1,34 @@
+---
+- name: Get the current IP address of {{ ovh_dynhost_hostname }}
+  ansible.builtin.shell: dig +short {{ ovh_dynhost_hostname }} @9.9.9.9
+  register: current_target_ip
+
+- name: Get the new public IP address
+  ansible.builtin.uri:
+    url: https://api.ipify.org
+    method: GET
+    return_content: true
+    status_code: 200
+  register: new_target_ip
+
+- name: Update the OVH DynHost DNS record
+  ansible.builtin.uri:
+    url: "{{ ovh_dynhost_api_url }}&hostname={{ ovh_dynhost_hostname }}&myip={{ new_target_ip.content }}"
+    method: GET
+    return_content: true
+    force_basic_auth: true
+    user: '{{ ovh_dynhost_username }}'
+    password: '{{ ovh_dynhost_password }}'
+    status_code: 200
+  register: response
+  when:
+    - current_target_ip.stdout != new_target_ip.content
+
+- name: Execution details
+  ansible.builtin.debug:
+    msg: |-
+      {% if response.content is defined %}
+        The OVH DynHost DNS record for {{ ovh_dynhost_hostname }} has been updated to {{ new_target_ip.content }}.
+      {% else %}
+        The OVH DynHost DNS record for {{ ovh_dynhost_hostname }} is current.
+      {% endif %}

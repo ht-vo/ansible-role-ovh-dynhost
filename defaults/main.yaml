@@ -1,0 +1,6 @@
+---
+# Complete steps 1 & 2 to set up a DynHost username and DNS record
+# https://help.ovhcloud.com/csm/en-ie-dns-dynhost?id=kb_article_view&sysparm_article=KB0051641
+ovh_dynhost_hostname: ''
+ovh_dynhost_username: ''
+ovh_dynhost_password: ''

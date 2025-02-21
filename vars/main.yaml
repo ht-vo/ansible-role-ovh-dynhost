@@ -1,0 +1,4 @@
+---
+# OVH DynHost API URL
+# https://help.ovhcloud.com/csm/en-ie-dns-dynhost?id=kb_article_view&sysparm_article=KB0051641
+ovh_dynhost_api_url: 'https://dns.eu.ovhapis.com/nic/update?system=dyndns'
